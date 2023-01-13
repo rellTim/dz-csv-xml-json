@@ -98,7 +98,7 @@ public class Xml {
             if (Node.ELEMENT_NODE == node_.getNodeType()) {
                 Element element = (Element) node_;
                 list.add(new Workers(
-                        (int) Long.parseLong(element.getElementsByTagName("id").item(0).getTextContent()),
+                        Integer.parseInt(element.getElementsByTagName("id").item(0).getTextContent()),
                         element.getElementsByTagName("firstName").item(0).getTextContent(),
                         element.getElementsByTagName("lastName").item(0).getTextContent(),
                         element.getElementsByTagName("country").item(0).getTextContent(),

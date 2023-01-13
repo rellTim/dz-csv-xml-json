@@ -1,16 +1,1 @@
-[
-  {
-    "id": 1,
-    "name": "John",
-    "lastName": "Smith",
-    "country": "USA",
-    "age": 25
-  },
-  {
-    "id": 2,
-    "name": "Inav",
-    "lastName": "Petrov",
-    "country": "Russia",
-    "age": 23
-  }
-]
+[{"id":1,"name":"John","lastName":"Smith","country":"USA","age":25},{"id":2,"name":"Inav","lastName":"Petrov","country":"Russia","age":23}]
