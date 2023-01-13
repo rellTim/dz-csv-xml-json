@@ -11,11 +11,16 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Xml {
+    static List<Workers> list = new ArrayList<>();
+
     public static void main(String[] args) throws ParserConfigurationException, TransformerException, IOException, SAXException {
         createXmlFile();
         deserializeXmlFile("data.xml");
+        Csv.json(list);
     }
 
     static void createXmlFile() throws ParserConfigurationException, TransformerException {
@@ -80,30 +85,27 @@ public class Xml {
         transformer.transform(domSource, streamResult);
     }
 
-    static void deserializeXmlFile(String s) throws ParserConfigurationException, IOException, SAXException {
+    static List<Workers> deserializeXmlFile(String s) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse(new File(s));
-        Node root = doc.getDocumentElement();
-        System.out.println("Корневой элемент: " + root.getNodeName());
-        read(root);
-    }
 
-    private static void read(Node node) {
-        NodeList nodeList = node.getChildNodes();
+        Node root = doc.getDocumentElement();
+        NodeList nodeList = root.getChildNodes();
+
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node node_ = nodeList.item(i);
             if (Node.ELEMENT_NODE == node_.getNodeType()) {
-                System.out.println("Текущий узел: " + node_.getNodeName());
                 Element element = (Element) node_;
-                NamedNodeMap map = element.getAttributes();
-                for (int a = 0; a < map.getLength(); a++) {
-                    String attrName = map.item(a).getNodeName();
-                    String attrValue = map.item(a).getNodeValue();
-                    System.out.println("Атрибут: " + attrName + "; значение: " + attrValue);
-                }
-                read(node_);
+                list.add(new Workers(
+                        (int) Long.parseLong(element.getElementsByTagName("id").item(0).getTextContent()),
+                        element.getElementsByTagName("firstName").item(0).getTextContent(),
+                        element.getElementsByTagName("lastName").item(0).getTextContent(),
+                        element.getElementsByTagName("country").item(0).getTextContent(),
+                        Integer.parseInt(element.getElementsByTagName("age").item(0).getTextContent())
+                ));
             }
         }
+        return list;
     }
 }
